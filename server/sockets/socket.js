@@ -14,6 +14,19 @@ io.on("connection", (client) => {
 
     let people = users.addPerson(client.id, data.name);
 
+    client.broadcast.emit("getPeople", users.getPeople());
+
     callback(people);
+  });
+
+  client.on("disconnect", () => {
+    let personDeleted = users.deletePerson(client.id);
+
+    client.broadcast.emit("createMessage", {
+      user: "Admin",
+      message: `${personDeleted.name} left the chat`,
+    });
+
+    client.broadcast.emit("getPeople", users.getPeople());
   });
 });
