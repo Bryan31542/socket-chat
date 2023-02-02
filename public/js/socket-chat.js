@@ -30,3 +30,8 @@ socket.on("createMessage", function (message) {
 socket.on("getPeople", function (people) {
   console.log(people);
 });
+
+// private messages
+socket.on("privateMessage", function (message) {
+  console.log("Private message:", message);
+});
