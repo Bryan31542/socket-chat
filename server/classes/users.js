@@ -3,8 +3,8 @@ class Users {
     this.people = [];
   }
 
-  addPerson(id, name) {
-    let person = { id, name };
+  addPerson(id, name, room) {
+    let person = { id, name, room};
 
     this.people.push(person);
 
@@ -22,7 +22,8 @@ class Users {
   }
 
   getPersonForRoom(room) {
-    // todo
+    let peopleForRoom = this.people.filter((p) => p.room === room);
+    return peopleForRoom;
   }
 
   deletePerson(id) {

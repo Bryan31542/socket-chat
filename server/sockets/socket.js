@@ -6,35 +6,43 @@ const users = new Users();
 
 io.on("connection", (client) => {
   client.on("joinChat", (data, callback) => {
-    if (!data.name) {
+    if (!data.name || !data.room) {
       return callback({
         error: true,
-        message: "The name is required",
+        message: "The name/room is required",
       });
     }
 
-    let people = users.addPerson(client.id, data.name);
+    client.join(data.room);
 
-    client.broadcast.emit("getPeople", users.getPeople());
+    users.addPerson(client.id, data.name, data.room);
 
-    callback(people);
+    client.broadcast
+      .to(data.room)
+      .emit("getPeople", users.getPersonForRoom(data.room));
+
+    callback(users.getPersonForRoom(data.room));
   });
 
   client.on("createMessage", (data) => {
     let person = users.getPerson(client.id);
     let message = createMessage(person.name, data.message);
-    client.broadcast.emit("createMessage", message);
+    client.broadcast.to(person.room).emit("createMessage", message);
   });
 
   client.on("disconnect", () => {
     let personDeleted = users.deletePerson(client.id);
 
-    client.broadcast.emit(
-      "createMessage",
-      createMessage("Admin", `${personDeleted.name} left the chat`)
-    );
+    client.broadcast
+      .to(personDeleted.room)
+      .emit(
+        "createMessage",
+        createMessage("Admin", `${personDeleted.name} left the chat`)
+      );
 
-    client.broadcast.emit("getPeople", users.getPeople());
+    client.broadcast
+      .to(personDeleted.room)
+      .emit("getPeople", users.getPersonForRoom(personDeleted.room));
   });
 
   // private messages
