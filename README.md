@@ -1,9 +1,12 @@
-# Notas:
+# Notes:
 
-Este es un pequeño servidor de express listo para ejecutarse y servir la carpeta public en la web.
-
-Recuerden que deben de reconstruir los módulos de node con el comando
-
+Before you start using this socket chat project you need to install all the required dependencies
 ```
 npm install
+```
+
+Then to run the project at localhost you need to execute in the terminal 
+
+``` 
+node server/server.js || nodemon server/server.js
 ```
