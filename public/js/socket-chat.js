@@ -16,7 +16,8 @@ socket.on("connect", function () {
   console.log("Connected to server");
 
   socket.emit("joinChat", user, function (resp) {
-    console.log("Users connected: ", resp);
+    //console.log("Users connected: ", resp);
+    renderUsers(resp);
   });
 });
 
@@ -29,7 +30,7 @@ socket.on("createMessage", function (message) {
 });
 
 socket.on("getPeople", function (people) {
-  console.log(people);
+  renderUsers(people);
 });
 
 // private messages
