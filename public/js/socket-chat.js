@@ -15,9 +15,9 @@ var user = {
 socket.on("connect", function () {
   console.log("Connected to server");
 
-  socket.emit("joinChat", user, function (resp) {
+  socket.emit("joinChat", user, function (people) {
     //console.log("Users connected: ", resp);
-    renderUsers(resp);
+    renderUsers(people);
   });
 });
 
@@ -26,7 +26,8 @@ socket.on("disconnect", function () {
 });
 
 socket.on("createMessage", function (message) {
-  console.log("Server:", message);
+  renderMessages(message, false);
+  scrollBottom();
 });
 
 socket.on("getPeople", function (people) {
